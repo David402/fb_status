@@ -40,8 +40,7 @@ class App
       response = RC::Universal.new.get("https://graph.facebook.com/oauth/access_token",
                                        client_id: APP_ID, redirect_uri: MY_URL,
                                        client_secret: APP_SECRET, code: code).tap{}
-puts "!!!!!!!!!!! #{response}"
-      @request.session['access_token'] = CGI::parse(response)['access_token']
+      @request.session['access_token'] = CGI::parse(response)['access_token'][0]
 
       user = JSON.parse(RC::Universal.new.get('https://graph.facebook.com/me',
                                               access_token: @request.session['access_token']))
