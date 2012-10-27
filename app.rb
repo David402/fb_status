@@ -13,7 +13,7 @@ class App
   def call env
     @request = Rack::Request.new env
     return login if @request.request_method == 'GET' and @request.path_info == '/login'
-    [303, {'Location' => "/login"}, []] unless @request.params['access_token']
+    return [303, {'Location' => "/login"}, []] unless @request.params['access_token']
 
     case @request.request_method
     when 'GET'
