@@ -1,7 +1,15 @@
+GIT
+  remote: git://github.com/cardinalblue/rest-core.git
+  revision: baacda4e37d63ed92f43fb1eb05f52bf8d893291
+  specs:
+    rest-core (2.0.0)
+      rest-client
+
 GEM
   remote: https://rubygems.org/
   specs:
     kgio (2.7.4)
+    mime-types (1.19)
     newrelic_rpm (3.5.0.1)
     rack (1.4.1)
     rainbows (4.4.1)
@@ -9,6 +17,8 @@ GEM
       rack (~> 1.1)
       unicorn (~> 4.1)
     raindrops (0.10.0)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     unicorn (4.4.0)
       kgio (~> 2.6)
       rack
@@ -21,4 +31,5 @@ PLATFORMS
 
 DEPENDENCIES
   newrelic_rpm
+  rest-core!
   zbatery
