@@ -37,10 +37,9 @@ class App
       return [200, {}, ["<script>top.location.href='#{dialog_url}'</script>"]]
     end
     if @request.session['state'] and @request.session['state'] == @request.params['state']
-      token_url = "https://graph.facebook.com/oauth/access_token?" \
-                  "client_id=#{APP_ID}&redirect_uri=#{CGI::escape(MY_URL)}" \
-                  "&client_secret=#{APP_SECRET}&code=#{code}"
-      response = RC::Universal.new.get(token_url).tap{}
+      response = RC::Universal.new.get("https://graph.facebook.com/oauth/access_token",
+                                       client_id: APP_ID, redirect_uri: MY_URL,
+                                       client_secret: APP_SECRET, code: code).tap{}
 puts "!!!!!!!!!!! #{response}"
       @request.session['access_token'] = CGI::parse(response)['access_token']
 
