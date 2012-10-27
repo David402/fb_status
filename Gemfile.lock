@@ -10,7 +10,6 @@ GEM
   specs:
     kgio (2.7.4)
     mime-types (1.19)
-    newrelic_rpm (3.5.0.1)
     rack (1.4.1)
     rainbows (4.4.1)
       kgio (~> 2.5)
@@ -30,6 +29,5 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  newrelic_rpm
   rest-core!
   zbatery
