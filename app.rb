@@ -32,7 +32,7 @@ class App
     unless code
       @request.session['state'] = SecureRandom.hex(3)
       dialog_url = "https://www.facebook.com/dialog/oauth?client_id=" \
-                   "#{APP_ID}&redirect_url=#{CGI::escape(MY_URL)}" \
+                   "#{APP_ID}&redirect_uri=#{CGI::escape(MY_URL)}" \
                    "&state=#{@request.session['state']}"
       return [200, {}, ["<script>top.location.href='#{dialog_url}'</script>"]]
     end
