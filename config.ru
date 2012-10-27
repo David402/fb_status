@@ -1,5 +1,5 @@
 #require 'json'
-#require 'erb'
+require 'erb'
 #require 'securerandom'
 #require 'cgi'
 
