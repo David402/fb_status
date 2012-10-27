@@ -6,8 +6,7 @@ class Auth
   def initialize app; @app = app; end
   def call env
     @request = Rack::Request.new env
-puts "!!!!!!!!!!!!!! #{@request.path_info}"
-    return @app.call if @request.session['access_token']
+    return @app.call(env) if @request.session['access_token']
     return login if @request.path_info == '/login'
     [303, {'Location' => '/login'}, []]
   end
