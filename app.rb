@@ -15,12 +15,12 @@ class App
       case @request.path_info
       when '/'; index
       else
-        [200, {}, "a get request"]
+        [200, {}, ["a get request"]]
       end
     when 'POST'
-      [200, {}, 'a post request']
+      [200, {}, ['a post request']]
     else
-      [200, {}, 'hello world']
+      [200, {}, ['hello world']]
     end
   end
 
