@@ -39,7 +39,7 @@ class App
     if @request.session['state'] and @request.session['state'] == @request.params['state']
       token_url = "https://graph.facebook.com/oauth/access_token?" \
                   "client_id=#{APP_ID}&redirect_uri=#{CGI::escape(MY_URL)}" \
-                  "client_secret=#{APP_SECRET}&code=#{code}"
+                  "&client_secret=#{APP_SECRET}&code=#{code}"
       response = RC::Universal.new.get(token_url).tap{}
       @request.session['access_token'] = CGI::parse(response['access_token'])
 
