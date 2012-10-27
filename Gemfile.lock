@@ -1,7 +1,8 @@
 GEM
+  remote: https://rubygems.org/
   specs:
     kgio (2.7.4)
-    newrelic_rpm (3.5.0)
+    newrelic_rpm (3.5.0.1)
     rack (1.4.1)
     rainbows (4.4.1)
       kgio (~> 2.5)
