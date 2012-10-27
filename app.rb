@@ -7,7 +7,7 @@ APP_ID='521199414574024'
 APP_SECRET='1e80afa96c9bb2b8f00872145c520188'
 MY_URL='http://fb-status.herokuapp.com/'
 
-INDEX_VIEW = ERB.new(File.read( File.expand_path("../views/#{index}", __FILE__) )).result(binding)
+INDEX_VIEW = ERB.new(File.read( File.expand_path("../views/index.erb", __FILE__) ))
 
 class App
   def call env
@@ -47,7 +47,7 @@ class App
       user = JSON.parse(RC::Universal.new.get('https://graph.facebook.com/me',
                                               access_token: @request.session['access_token']))
       #[200, {}, ["Hi, #{user['name']}, your facebook id is #{user['id']}"]]
-      [200, {}, [INDEX_VIEW]]
+      [200, {}, [INDEX_VIEW.result(binding)]]
     else
       [200, {}, ['You are attacking our site, dude!']] # victim of CSRF
     end
