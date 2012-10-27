@@ -1,12 +1,16 @@
-require 'securerandom'
-require 'rest-core'
-require 'cgi'
-
 APP_ID='521199414574024'
 APP_SECRET='1e80afa96c9bb2b8f00872145c520188'
 LOGIN_URL='http://fb-status.herokuapp.com/login/'
 
-class App
+class Auth
+  def initialize app; @app = app; end
+  def call env
+    @request = Rack::Request.new env
+    return @app.call if @request.session['access_token']
+    return login if @request.path_info == '/login'
+    [303, {'Location' => '/login'}, []]
+  end
+
   def login
     if @request.params['error_reason'] or @request.params['error']
       return [200, {}, ['Why did you denied using our app?']]
