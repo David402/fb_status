@@ -23,6 +23,7 @@ class Auth
                    "&state=#{@request.session['state']}"
       return [200, {}, ["<script>top.location.href='#{dialog_url}'</script>"]]
     end
+puts "session: #{@request.session['state']}, params: #{@request.params['state']}"
     if @request.session['state'] and @request.session['state'] == @request.params['state']
       response = RC::Universal.new.get("https://graph.facebook.com/oauth/access_token",
                                        client_id: APP_ID, redirect_uri: LOGIN_URL,
