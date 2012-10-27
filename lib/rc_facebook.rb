@@ -2,7 +2,7 @@ module RestCore
   Facebook = Builder.client do
     use DefaultSite, 'https://graph.facebook.com/'
     use DefaultHeaders, {'Accept' => 'application/json'}
-    use CommonLogger
+    use CommonLogger, method(:puts)
     use Cache, nil, 60 do # 60 secs expires_in
       use JsonResponse, true
     end

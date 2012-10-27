@@ -1,6 +1,12 @@
 <h1>Hi Africans</h1>
 <p>Your name is <%= user['name'] %>, and your id is <%= user['id'] %></p>
+<h2>Latest news:</h2>
 <% feed.each do |entry| %>
-  <h6><%= entry['message'] %></h6>
-  <p><%= entry['description'] %></p>
+  <% if entry['message'] and entry['description'] %>
+    <h3><%= entry['message'] %></h3>
+    <p><%= entry['description'] %></p>
+  <% else %>
+    <p><%= entry['message'] || entry['description'] %></p>
+  <% end %>
+  <hr>
 <% end %>
