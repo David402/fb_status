@@ -1,12 +1,6 @@
 require 'json'
 require 'erb'
-
 require './auth'
-
-APP_ID='521199414574024'
-APP_SECRET='1e80afa96c9bb2b8f00872145c520188'
-MY_URL='http://fb-status.herokuapp.com/'
-
 INDEX_VIEW = ERB.new(File.read( File.expand_path("../views/index.erb", __FILE__) ))
 
 class App
