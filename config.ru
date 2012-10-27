@@ -1,7 +1,7 @@
 #require 'json'
 require 'erb'
 #require 'securerandom'
-#require 'cgi'
+require 'cgi'
 
 require 'rest-core'
 
