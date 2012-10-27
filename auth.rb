@@ -12,8 +12,6 @@ class Auth
   end
 
   def login
-    puts "session: #{@request.session['state']}, params: #{@request.params['state']}"
-
     if @request.params['error_reason'] or @request.params['error']
       return [200, {}, ['Why did you denied using our app?']]
     end
