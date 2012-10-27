@@ -29,7 +29,7 @@ class App
 
   def index
     if @request.params['error_reason'] or @request.params['error']
-      [200, {}, ['Why did you denied using our app?']]
+      return [200, {}, ['Why did you denied using our app?']]
     end
     code = @request.params['code']
     unless code
