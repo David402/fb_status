@@ -41,7 +41,7 @@ class App
                   "client_id=#{APP_ID}&redirect_uri=#{CGI::escape(MY_URL)}" \
                   "&client_secret=#{APP_SECRET}&code=#{code}"
       response = RC::Universal.new.get(token_url).tap{}
-      @request.session['access_token'] = CGI::parse(response['access_token'])
+      @request.session['access_token'] = CGI::parse(response)['access_token']
 
       user = JSON.parse(RC::Universal.new.get('https://graph.facebook.com/me',
                                               access_token: @request.session['access_token']))
