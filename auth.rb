@@ -1,6 +1,6 @@
 APP_ID='521199414574024'
 APP_SECRET='1e80afa96c9bb2b8f00872145c520188'
-LOGIN_URL='http://fb-status.herokuapp.com/login/'
+LOGIN_URL='http://fb-status.herokuapp.com/login'
 
 class Auth
   def initialize app; @app = app; end
