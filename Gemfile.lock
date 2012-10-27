@@ -1,0 +1,23 @@
+GEM
+  specs:
+    kgio (2.7.4)
+    newrelic_rpm (3.5.0)
+    rack (1.4.1)
+    rainbows (4.4.1)
+      kgio (~> 2.5)
+      rack (~> 1.1)
+      unicorn (~> 4.1)
+    raindrops (0.10.0)
+    unicorn (4.4.0)
+      kgio (~> 2.6)
+      rack
+      raindrops (~> 0.7)
+    zbatery (4.1.2)
+      rainbows (~> 4.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  newrelic_rpm
+  zbatery
