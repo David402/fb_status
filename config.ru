@@ -1,6 +1,6 @@
-#require 'json'
+require 'json'
 require 'erb'
-#require 'securerandom'
+require 'securerandom'
 require 'cgi'
 
 require 'rest-core'
