@@ -1,6 +1,7 @@
 require 'securerandom'
 require 'cgi'
 require 'json'
+require 'erb'
 require 'rest-core'
 
 APP_ID='521199414574024'
