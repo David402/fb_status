@@ -42,7 +42,7 @@ class App
   end
 
   def handle_fb_error e, permissions
-    if e.error['code'] == 200 and e.error['type'] == 'OAuthException'
+    if e.error['type'] == 'OAuthException'
       @request.session['access_token'] = nil
       params = permissions.map{|p| "permissions[]=#{p}"}.join('&')
       return [303, {'Location' => "/login?#{params}"}, []]
