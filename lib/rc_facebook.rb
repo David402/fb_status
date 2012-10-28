@@ -23,9 +23,18 @@ class RC::Facebook
     raise Error(res) if res['error']
     res
   end
+  def post path, payload={}, query={}, opts={}
+    res = super(path, payload, query, opts)
+    raise Error(res) if res['error']
+    res
+  end
 
   def me
-    get 'me', access_token: access_token
+    # app_2915120374 is 'Status Updates' application in fql
+    # SELECT filter_key, name, type, value FROM stream_filter WHERE uid=100000437300099
+    get('me', access_token: @rc_facebook.access_token,
+              fields: 'picture,name,home.filter(app_2915120374).' \
+                      'fields(from,to,with_tags,message,type)')
   end
 
   def bbc_africa_feed

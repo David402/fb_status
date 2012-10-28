@@ -1,5 +1,6 @@
 class Auth
   LOGIN_URL='http://fb-status.herokuapp.com/login'
+  READ_PERMISSIONS=['read_stream']
   def initialize app; @app = app; end
   def call env
     @request = Rack::Request.new env
@@ -9,6 +10,7 @@ class Auth
   end
 
   def login
+    permissions = @request.params['permissions'] || READ_PERMISSIONS
     if @request.params['error_reason'] or @request.params['error']
       return [200, {}, ['Why did you denied using our app?']]
     end
@@ -17,7 +19,7 @@ class Auth
       @request.session['state'] = SecureRandom.hex(3)
       dialog_url = "https://www.facebook.com/dialog/oauth?client_id=" \
                    "#{CONFIG['facebook_app_id']}&redirect_uri=#{CGI::escape(LOGIN_URL)}" \
-                   "&state=#{@request.session['state']}"
+                   "&state=#{@request.session['state']}&scope=#{permissions.join(',')}"
       return [200, {}, ["<script>top.location.href='#{dialog_url}'</script>"]]
     end
     if @request.session['state'] and @request.session['state'] == @request.params['state']
