@@ -4,7 +4,7 @@
 </div>
 
 <img src="<%= user['picture']['data']['url'] %>">
-<b><%= user['name'] %></b><br>
+<b id="me_name"><%= user['name'] %></b><br>
 What's on your mind?<br>
 <textarea id="message_input"></textarea>
 <input type="button" onclick="ajaxSendRequest('post_feed')" style="background:#5b74a8;border-color:#8a9ac5 #29447E #1a356e;color:#fff">Share</input><br>
@@ -49,6 +49,9 @@ What's on your mind?<br>
               p.innerHTML = msg_input.value;
               home.insertBefore(p, home.firstChild);
               msg_input.value = "";
+              var h4 = document.createElement('h4');
+              h4.innerHTML = document.getElementById('my_name').innerHTML;
+              home.insertBefore(h4, home.firstChild);
             }
           }
         }
