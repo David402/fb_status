@@ -48,6 +48,7 @@ What's on your mind?<br>
         }
       };
     xhr.open("POST", uri, true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhr.send("message=" + msg_input.value);
   }
 </script>
