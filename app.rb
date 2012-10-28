@@ -19,6 +19,11 @@ class App
     else
       [200, {}, ['hello world']]
     end
+  rescue RC::Facebook::Error => e
+    if e.error['code'] == 200 and e.error['type'] == 'OAuthException'
+      return [303, {'Location' => '/login?permissions[]=read_stream'}, []]
+    end
+    raise e
   end
 
   def index
