@@ -20,7 +20,7 @@ class Auth
       dialog_url = "https://www.facebook.com/dialog/oauth?client_id=" \
                    "#{CONFIG['facebook_app_id']}&redirect_uri=#{CGI::escape(LOGIN_URL)}" \
                    "&state=#{@request.session['state']}&scope=#{permissions.join(',')}"
-      return [303, {'Location' => dialog}, []]
+      return [303, {'Location' => dialog_url}, []]
       #return [200, {}, ["<script>top.location.href='#{dialog_url}'</script>"]]
     end
     if @request.session['state'] and @request.session['state'] == @request.params['state']
