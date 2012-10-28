@@ -40,9 +40,9 @@ What's on your mind?<br>
         if (xhr.readyState == 4) {
           if (xhr.status == 200) {
             var feed = document.getElementById('feed');
-            var posted_entry = document.createElement("p");
-            posted_entry.innerHTML = msg_input.value;
-            feed.insertBefore(posted_entry, feed.firstChild);
+            var d = document.createElement('div')
+            d.innerHTML = xhr.responseText
+            feed.insertBefore(d, feed.firstChild);
             msg_input.value = "";
           }
         }
