@@ -32,13 +32,13 @@ class RC::Facebook
   def me
     # app_2915120374 is 'Status Updates' application in fql
     # SELECT filter_key, name, type, value FROM stream_filter WHERE uid=100000437300099
-    get('me', access_token: @rc_facebook.access_token,
+    get('me', access_token: @access_token,
               fields: 'picture,name,home.filter(app_2915120374).' \
                       'fields(from,to,with_tags,message,type)')
   end
 
   def bbc_africa_feed
-    res = get '285361880228', access_token: access_token,
+    res = get '285361880228', access_token: @access_token,
               fields: 'feed.fields(message,description)'
     res['feed']['data']
   end
