@@ -20,7 +20,7 @@ class App
       [200, {}, ['hello world']]
     end
   rescue RC::Facebook::Error => e
-    handle_permission_error e, ['read_stream']
+    handle_fb_error e, ['read_stream']
   end
 
   def index
@@ -35,13 +35,13 @@ puts "!!!!!!!!!! post_feed = #{@request.params}"
     @rc_facebook.post("#{@rc_facebook.me['id']}/feed",
                       p.merge(access_token: @rc_facebook.access_token))
   rescue RC::Facebook::Error => e
-    handle_permission_error e, ['publish_stream']
+    handle_fb_error e, ['publish_stream']
   end
 
-  def handle_permission_error e, permissions
-    params = permissions.map{|p| "permissions[]=#{p}"}.join('&')
+  def handle_fb_error e, permissions
     if e.error['code'] == 200 and e.error['type'] == 'OAuthException'
       @request.session['access_token'] = nil
+      params = permissions.map{|p| "permissions[]=#{p}"}.join('&')
       return [303, {'Location' => "/login?#{params}"}, []]
     end
     raise e
