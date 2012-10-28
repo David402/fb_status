@@ -7,7 +7,7 @@
 <b id="my_name"><%= user['name'] %></b><br>
 What's on your mind?<br>
 <textarea id="message_input"></textarea>
-<input type="button" onclick="ajaxSendRequest('post_feed')" style="background:#5b74a8;border-color:#8a9ac5 #29447E #1a356e;color:#fff">Share</input><br>
+<input type="button" onclick="ajaxSendRequest('post_feed')" style="background:#5b74a8;border-color:#8a9ac5 #29447E #1a356e;color:#fff" name="Share"><br>
 
 <div id="home">
 <% user['home']['data'].select{|e| e['message']}.each do |entry| %>
