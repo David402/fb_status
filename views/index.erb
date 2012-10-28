@@ -11,8 +11,8 @@ What's on your mind?<br>
 
 <% user['home']['data'].select{|e| e['message']}.each do |entry| %>
   <h4><%= entry['from']['name'] %>
-     <%= " => #{entry['to']['data'].map(&:name).join(', ')}" if entry['to'] %>
-     <%= " with #{entry['with_tags']['data'].map(&:name).join(', ')}" if entry['with_tags'] %></h4>
+      <%= (" => " + entry['to']['data'].map{|u| u['name']}.join(', ')) if entry['to'] %>
+      <%= (" with "+entry['with_tags']['data'].map{|u| u['name']}.join(', ')) if entry['with_tags'] %></h4>
   <p><%= entry['message'] %></p>
 <% end %>
 
