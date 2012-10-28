@@ -3,7 +3,7 @@ require 'active_support/cache/dalli_store'
 
 module RestCore
   class Cache
-    def cache_clear
+    def cache_clear env
       return env unless cache(env)
       return env unless cache_for?(env)
   
