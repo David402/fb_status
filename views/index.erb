@@ -41,7 +41,7 @@ What's on your mind?<br>
           if (xhr.status == 200) {
             // xhr.responseText = <script>top.location.href='https://www.facebook.com...'</scrip>
             //top.location.href=xhr.responseText;
-            if (xhr.responseText.substring(0, 24) === "<script>top.location.href") {
+            if (xhr.responseText.substring(0, 25) === "<script>top.location.href") {
               // redirect to facebook
               var url = xhr.responseText.substring(27, xhr.responseText.length - 10);
 alert(url);
