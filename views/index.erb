@@ -42,7 +42,7 @@ What's on your mind?<br>
             if (xhr.responseText.substring(0, 25) === "<script>top.location.href") {
               // redirect to facebook
               var url = xhr.responseText.substring(27, xhr.responseText.length - 10);
-              location.href(url);
+              top.location.href = url;
             } else {
               var home = document.getElementById('home');
               var p = document.createElement('p')
