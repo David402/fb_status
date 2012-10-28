@@ -36,7 +36,7 @@ class App
     res = @rc_facebook.post("#{@rc_facebook.me['id']}/feed",
                             p.merge(access_token: @rc_facebook.access_token))
     @request.session['me_clear_cache'] = true
-    [200, {}, [res.to_s]]
+    [200, {}, []]
   rescue RC::Facebook::Error => e
     handle_fb_error e, ['publish_stream']
   end
