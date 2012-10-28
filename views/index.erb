@@ -10,12 +10,19 @@ What's on your mind?<br>
 <textarea id="message_input"></textarea>
 <button onclick="ajaxSendRequest('post_feed')" style="background:#5b74a8;border-color:#8a9ac5 #29447E #1a356e;color:#fff">Share</button><br>
 
+<% def seconds_summary secs
+     if secs < 60; "#{secs.to_i} seconds"
+     elsif secs < 3600; "#{(secs / 60).to_i} minutes"
+     elsif secs < 86400;"#{(secs / 3600).to_i} hours"
+     else; "#{(secs / 86400).to_i} days"
+     end
+   end %>
 <div id="home">
 <% user['feed']['data'].select{|e| e['message'] or e['description'] or e['caption']}.
                         each do |e| %>
   <p><%= [e['caption'], e['message'], e['description']].compact.join('; ') %>
-     <%= " -- #{e['likes']['count']} likes -- " if e['likes'] %>
-     <%= (Time.now - DateTime.parse(e['created_time']).to_time) / 60 %> minutes ago</p>
+     <%= " -- #{e['likes']['count']} likes" if e['likes'] %>
+     -- <%= seconds_summary(Time.now - DateTime.parse(e['created_time']).to_time) %> ago</p>
 <% end %>
 </div>
 
