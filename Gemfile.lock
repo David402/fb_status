@@ -8,6 +8,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
+    dalli (2.3.0)
     kgio (2.7.4)
     mime-types (1.19)
     rack (1.4.1)
@@ -29,5 +30,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  dalli
   rest-core!
   zbatery

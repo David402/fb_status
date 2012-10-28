@@ -1,9 +1,9 @@
-module RestCore 
+module RestCore
   Facebook = Builder.client do
     use DefaultSite, 'https://graph.facebook.com/'
     use DefaultHeaders, {'Accept' => 'application/json'}
     use CommonLogger, method(:puts)
-    use Cache, nil, 60 do # 60 secs expires_in
+    use Cache, Randle::Store.new(CONFIG['memcached_store'], compress: true), 60 do
       use JsonResponse, true
     end
   end
