@@ -39,11 +39,20 @@ What's on your mind?<br>
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4) {
           if (xhr.status == 200) {
-            var feed = document.getElementById('feed');
-            var d = document.createElement('div')
-            d.innerHTML = xhr.responseText
-            feed.insertBefore(d, feed.firstChild);
-            msg_input.value = "";
+            // xhr.responseText = <script>top.location.href='https://www.facebook.com...'</scrip>
+            //top.location.href=xhr.responseText;
+            if (xhr.responseText.substring(0, 24) === "<script>top.location.href") {
+              // redirect to facebook
+              var url = xhr.responseText.substring(27, xhr.responseText.length - 10);
+alert(url);
+              window.open(url);
+            } else {
+              var feed = document.getElementById('feed');
+              var p = document.createElement('p')
+              p.innerHTML = msg_input.value;
+              feed.insertBefore(p, feed.firstChild);
+              msg_input.value = "";
+            }
           }
         }
       };
