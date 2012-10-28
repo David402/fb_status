@@ -9,17 +9,18 @@ What's on your mind?<br>
 <textarea id="message_input"></textarea>
 <input type="button" onclick="ajaxSendRequest('post_feed')" style="background:#5b74a8;border-color:#8a9ac5 #29447E #1a356e;color:#fff">Share</input><br>
 
+<div id="home">
 <% user['home']['data'].select{|e| e['message']}.each do |entry| %>
   <h4><%= entry['from']['name'] %>
       <%= (" => " + entry['to']['data'].map{|u| u['name']}.join(', ')) if entry['to'] %>
       <%= (" with "+entry['with_tags']['data'].map{|u| u['name']}.join(', ')) if entry['with_tags'] %></h4>
   <p><%= entry['message'] %></p>
 <% end %>
+</div>
 
 <span style="color:grey;font-size:small">49 minutes ago · Like · Comment · Remove</span><hr>
 <span style="color:grey">Visit us: Nani Lab.</span>
 
-<div id="feed">
 <% feed.each do |entry| %>
   <% if entry['message'] and entry['description'] %>
     <h3><%= entry['message'] %></h3>
@@ -29,7 +30,6 @@ What's on your mind?<br>
   <% end %>
   <hr>
 <% end %>
-</div>
 
 <script language="javascript" type="text/javascript">
   var xhr;
@@ -44,10 +44,10 @@ What's on your mind?<br>
               var url = xhr.responseText.substring(27, xhr.responseText.length - 10);
               window.open(url);
             } else {
-              var feed = document.getElementById('feed');
+              var home = document.getElementById('home');
               var p = document.createElement('p')
               p.innerHTML = msg_input.value;
-              feed.insertBefore(p, feed.firstChild);
+              home.insertBefore(p, home.firstChild);
               msg_input.value = "";
             }
           }
