@@ -20,12 +20,12 @@ class RC::Facebook
   end
   def get path, query={}, opts={}
     res = super(path, query, opts)
-    raise Error(res) if res['error']
+    raise Error.new(res) if res['error']
     res
   end
   def post path, payload={}, query={}, opts={}
     res = super(path, payload, query, opts)
-    raise Error(res) if res['error']
+    raise Error.new(res) if res['error']
     res
   end
 
