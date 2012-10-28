@@ -1,0 +1,10 @@
+<h1>Africa Headlines</h1>
+<% feed.each do |entry| %>
+  <% if entry['message'] and entry['description'] %>
+    <h3><%= entry['message'] %></h3>
+    <p><%= entry['description'] %></p>
+  <% else %>
+    <p><%= entry['message'] || entry['description'] %></p>
+  <% end %>
+  <hr>
+<% end %>

@@ -1,4 +1,5 @@
 INDEX_VIEW = ERB.new(File.read( File.expand_path("../views/index.erb", __FILE__) ))
+AFRICA_NEWS= ERB.new(File.read( File.expand_path("../views/africa_news.erb", __FILE__) ))
 
 class App
   def call env
@@ -9,6 +10,7 @@ class App
     when 'GET'
       case @request.path_info
       when '/'; index
+      when '/africa_news'; africa_news
       else; [200, {}, ["a get request"]]
       end
     when 'POST'
@@ -27,7 +29,6 @@ class App
     me_clear_cache = @request.session['me_clear_cache']
     @request.session['me_clear_cache'] = nil if me_clear_cache
     user = @rc_facebook.me 'cache.update' => me_clear_cache
-    feed = @rc_facebook.bbc_africa_feed
     [200, {}, [INDEX_VIEW.result(binding)]]
   end
 
@@ -39,6 +40,11 @@ class App
     [200, {}, []]
   rescue RC::Facebook::Error => e
     handle_fb_error e, ['publish_stream']
+  end
+
+  def africa_news
+    feed = @rc_facebook.bbc_africa_feed
+    [200, {}, [AFRICA_NEWS.result(binding)]]
   end
 
   def handle_fb_error e, permissions
