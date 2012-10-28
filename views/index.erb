@@ -18,11 +18,13 @@ What's on your mind?<br>
      end
    end %>
 <div id="home">
+<% if false%>
 <% user['feed']['data'].select{|e| e['message'] or e['description'] or e['caption']}.
                         each do |e| %>
   <p><%= [e['caption'], e['message'], e['description']].compact.join('; ') %>
      <%= " -- #{e['likes']['count']} likes" if e['likes'] %>
      -- <%= seconds_summary(Time.now - DateTime.parse(e['created_time']).to_time) %> ago</p>
+<% end %>
 <% end %>
 </div>
 
