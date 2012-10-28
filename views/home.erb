@@ -11,11 +11,11 @@ What's on your mind?<br>
 <button onclick="ajaxSendRequest('post_feed')" style="background:#5b74a8;border-color:#8a9ac5 #29447E #1a356e;color:#fff">Share</button><br>
 
 <div id="home">
-<% user['feed']['data'].select{|e| e['message'] or e['description'] or e['caption']}.
-                        each do |e| %>
-  <p><%= [e['caption'], e['message'], e['description']].compact.join('; ') %>
-     <%= " -- #{e['likes']['count']} likes -- " if e['likes'] %>
-     <%= (Time.now - DateTime.parse(e['created_time']).to_time) / 60 %> minutes ago</p>
+<% user['home']['data'].select{|e| e['message']}.each do |entry| %>
+  <h4><%= entry['from']['name'] %>
+      <%= (" => " + entry['to']['data'].map{|u| u['name']}.join(', ')) if entry['to'] %>
+      <%= (" with "+entry['with_tags']['data'].map{|u| u['name']}.join(', ')) if entry['with_tags'] %></h4>
+  <p><%= entry['message'] %></p>
 <% end %>
 </div>
 

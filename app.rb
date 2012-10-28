@@ -1,5 +1,6 @@
 INDEX_VIEW = ERB.new(File.read( File.expand_path("../views/index.erb", __FILE__) ))
 AFRICA_NEWS= ERB.new(File.read( File.expand_path("../views/africa_news.erb", __FILE__) ))
+HOME_VIEW  = ERB.new(File.read( File.expand_path("../views/home.erb", __FILE__) ))
 
 class App
   def call env
@@ -10,6 +11,7 @@ class App
     when 'GET'
       case @request.path_info
       when '/'; index
+      when '/home'; home
       when '/africa_news'; africa_news
       else; [200, {}, ["a get request"]]
       end
@@ -40,6 +42,11 @@ class App
     [200, {}, []]
   rescue RC::Facebook::Error => e
     handle_fb_error e, ['publish_stream']
+  end
+
+  def home
+    user = @rc_facebook.home
+    [200, {}, [HOME_VIEW.result(binding)]]
   end
 
   def africa_news
