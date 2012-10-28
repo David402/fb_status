@@ -32,8 +32,10 @@ class App
   def post_feed
 puts "!!!!!!!!!! post_feed = #{@request.params}"
     p = @request.params.select{|k, v| ['message', 'link'].member?(k)}
-    @rc_facebook.post("#{@rc_facebook.me['id']}/feed",
+uu=    @rc_facebook.post("#{@rc_facebook.me['id']}/feed",
                       p.merge(access_token: @rc_facebook.access_token))
+puts "uu = #{uu}"
+uu
   rescue RC::Facebook::Error => e
     handle_fb_error e, ['publish_stream']
   end
