@@ -31,7 +31,7 @@ class RC::Facebook
 
   def me opts={}
     get('me', {access_token: @access_token,
-               fields: 'name,picture,feed.fields(caption,description,message,likes)'}, opts)
+               fields: 'name,picture,feed.limit(3).fields(caption,description,message,likes)'}, opts)
   end
 
   def home
