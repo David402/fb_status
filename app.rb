@@ -30,7 +30,7 @@ class App
       [304, {}, []]
     else
       @user = @rc_facebook.me 'cache.update' => true
-      [200, {'ETag' => etag}, [erb(:index)]]
+      [200, (etag ? {'ETag' => etag} : {}), [erb(:index)]]
     end
   end
   def post_feed
