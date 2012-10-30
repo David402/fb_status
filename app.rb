@@ -57,7 +57,7 @@ class App
 
   def post_facebook_callback
     data = JSON.parse(@request.body)
-    users = (data['object'] == 'user' ? data['entry'] || [])
+    users = (data['object'] == 'user' ? data['entry'] : [])
     users.each{ |user| UserInCache.create(id: user['uid'], etag: user['time']) }
     [200, {}, []]
   end
