@@ -25,12 +25,12 @@ class App
   end
 
   def index
-    if env['HTTP_IF_NONE_MATCH'] and
-       (UserInCache.find(uid).try(:etag) == env['HTTP_IF_NONE_MATCH'])
+    etag = UserInCache.find(uid).try(:etag)
+    if env['HTTP_IF_NONE_MATCH'] and (etag == env['HTTP_IF_NONE_MATCH'])
       [304, {}, []]
     else
       @user = @rc_facebook.me 'cache.update' => true
-      erb :index
+      [200, {'ETag' => etag}, [erb :index]]
     end
   end
   def post_feed
@@ -43,12 +43,12 @@ class App
 
   def home
     @user = @rc_facebook.home
-    erb :home
+    [200, {}, [erb :home]]
   end
 
   def africa_news
     @feed = @rc_facebook.bbc_africa_feed
-    erb :africa_news
+    [200, {}, [erb :africa_news]]
   end
 
   def get_facebook_callback
