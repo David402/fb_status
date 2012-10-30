@@ -3,7 +3,7 @@ module RestCore
     use DefaultSite, 'https://graph.facebook.com/'
     use DefaultHeaders, {'Accept' => 'application/json'}
     use CommonLogger, method(:puts)
-    use Cache, Randle::Store.new(CONFIG['memcached_store'], compress: true), 60 do
+    use Cache, MEMCACHED_STORE, 60 do
       use JsonResponse, true
     end
   end

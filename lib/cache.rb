@@ -62,3 +62,47 @@ module Randle
 
   end
 end
+
+MEMCACHED_STORE = Randle::Store.new(CONFIG['memcached_stores'], compress: true)
+
+class ModelInCache
+  attr_accessor :id
+  def self.key aid
+    "#{name}_#{aid}"
+  end
+
+  def self.find aid
+    MEMCACHED_STORE.read(key(aid))
+  end
+
+  def self.find_or_initialize aid
+    raise "id must be an Integer or String" unless aid.is_a?(Integer) or aid.is_a?(String)
+    find(aid) || new(id: aid)
+  end
+
+  def self.create attrs
+    new(attrs).save
+  end
+
+  def initialize attrs
+    (attrs || {}).each do |k, v|
+      send("#{k}=", v) if respond_to?(k)
+    end
+  end
+
+  def save
+    MEMCACHED_STORE.write(UserInCache.key(@id), self, expires_in: 21 * 86400)
+  end
+
+  def destroy
+    MEMCACHED_STORE.delete(UserInCache.key(@id))
+  end
+
+  def update_attributes attrs
+    initialize attrs; save
+  end
+end
+
+class UserInCache < ModelInCache
+  attr_accessor :etag
+end

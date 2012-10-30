@@ -4,23 +4,23 @@ class Auth
   def initialize app; @app = app; end
   def call env
     @request = Rack::Request.new env
-    return @app.call(env) if @request.session['access_token']
+    return @app.call(env) if @request.session['access_token'] and
+                             @request.session['uid']
     return login if @request.path_info == '/login'
     [303, {'Location' => '/login'}, []]
   end
 
   def login
-    permissions = @request.params['permissions'] || READ_PERMISSIONS
     if @request.params['error_reason'] or @request.params['error']
       return [200, {}, ['Why did you denied using our app?']]
     end
     code = @request.params['code']
     unless code
       @request.session['state'] = SecureRandom.hex(3)
+      permissions = @request.params['permissions'] || READ_PERMISSIONS
       dialog_url = "https://www.facebook.com/dialog/oauth?client_id=" \
                    "#{CONFIG['facebook_app_id']}&redirect_uri=#{CGI::escape(LOGIN_URL)}" \
                    "&state=#{@request.session['state']}&scope=#{permissions.join(',')}"
-      #return [303, {'Location' => dialog_url}, []]
       return [200, {}, ["<script>top.location.href='#{dialog_url}'</script>"]]
     end
     if @request.session['state'] and @request.session['state'] == @request.params['state']
@@ -28,6 +28,10 @@ class Auth
                                        client_id: CONFIG['facebook_app_id'], redirect_uri: LOGIN_URL,
                                        client_secret: CONFIG['facebook_app_secret'], code: code).tap{}
       @request.session['access_token'] = CGI::parse(response)['access_token'][0]
+      @request.session['uid'] =
+        RC::Facebook.new.get('me', access_token: @request.session['access_token'])['id']
+      u = UserInCache.find_or_initialize @request.session['uid']
+      u.update_attributes feed_last_modified: 1
       [303, {'Location' => '/'}, []]
     else
       [200, {}, ['You are attacking our site, dude!']] # victim of CSRF

@@ -15,4 +15,26 @@ module Randle::Foundation
   def erb v
     [200, {}, [Erb.instance.erb(v).result(binding)]]
   end
+
+  def session
+    @request.session
+  end
+
+  def params
+    @request.params
+  end
+
+  def prepare_from_env env
+    @request = Rack::Request.new env
+    @rc_facebook = RC::Facebook.new
+    @rc_facebook.access_token = @request.session['access_token']
+  end
+
+  def access_token
+    @request.session['access_token']
+  end
+
+  def uid
+    @request.session['uid']
+  end
 end

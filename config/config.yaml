@@ -1,3 +1,3 @@
-memcached_store: ['memcached://bfade4:e4e8a3e6c46566e2b585@mc1.ec2.memcachier.com']
+memcached_stores: ['memcached://bfade4:e4e8a3e6c46566e2b585@mc1.ec2.memcachier.com']
 facebook_app_id: '521199414574024'
 facebook_app_secret: '1e80afa96c9bb2b8f00872145c520188'
