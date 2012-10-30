@@ -49,6 +49,7 @@ class Auth
 
   def post_facebook_callback
     data = JSON.parse(@request.body)
+puts "post_facebook_callback: data = #{data}"
     users = (data['object'] == 'user' ? data['entry'] : [])
     users.each{ |user| UserInCache.create(id: user['uid'], etag: user['time']) }
     [200, {}, []]
