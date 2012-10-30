@@ -27,7 +27,7 @@ class App
   def index
     me_clear_cache = @request.session['me_clear_cache']
     @request.session['me_clear_cache'] = nil if me_clear_cache
-    user = @rc_facebook.me 'cache.update' => me_clear_cache
+    @user = @rc_facebook.me 'cache.update' => me_clear_cache
     erb :index
   end
 
@@ -42,12 +42,12 @@ class App
   end
 
   def home
-    user = @rc_facebook.home
+    @user = @rc_facebook.home
     erb :home
   end
 
   def africa_news
-    feed = @rc_facebook.bbc_africa_feed
+    @feed = @rc_facebook.bbc_africa_feed
     erb :africa_news
   end
 

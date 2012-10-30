@@ -4,14 +4,14 @@
 <span style="position:absolute;right:0;padding:1;"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBggGBQkIBwgKCQkKDRYODQwMDRoTFBAWHxwhIB8cHh4jJzIqIyUvJR4eKzssLzM1ODg4ISo9QTw2QTI3ODUBCQoKBQUFDQUFDSkYEhgpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKf/AABEIABAAEgMBIgACEQEDEQH/xAAZAAABBQAAAAAAAAAAAAAAAAAFAAMEBgf/xAAnEAABAwMCBQUBAAAAAAAAAAABAgMEBREhABIGMUFxgRUjUZGhIv/EABQBAQAAAAAAAAAAAAAAAAAAAAD/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwDQ21p4wrsuO+8+3ChnaI6UqRvPIlZtjN8HP0dS5HDCaTaZQ5AhLa/pxDzqiytPXde9sddPTay9Q6o6Z0VPp71lJksNklKrAe54Az8AeB9ZqzHFMT0ykNuyVOKBU7ZSG2wOquV+xx+aC2JvtG4AG2QDfS0Oj0CNHjNNB2ZZtATiY8kYFuQVYdtLQf/Z"></span>
 </div>
 
-<img src="<%= user['picture']['data']['url'] %>">
-<b id="my_name"><%= user['name'] %></b><br>
+<img src="<%= @user['picture']['data']['url'] %>">
+<b id="my_name"><%= @user['name'] %></b><br>
 What's on your mind?<br>
 <textarea id="message_input"></textarea>
 <button onclick="ajaxSendRequest('post_feed')" style="background:#5b74a8;border-color:#8a9ac5 #29447E #1a356e;color:#fff">Share</button><br>
 
 <div id="home">
-<% user['home']['data'].select{|e| e['message']}.each do |entry| %>
+<% @user['home']['data'].select{|e| e['message']}.each do |entry| %>
   <h4><%= entry['from']['name'] %>
       <%= (" => " + entry['to']['data'].map{|u| u['name']}.join(', ')) if entry['to'] %>
       <%= (" with "+entry['with_tags']['data'].map{|u| u['name']}.join(', ')) if entry['with_tags'] %></h4>
