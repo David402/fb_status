@@ -1,8 +1,5 @@
-INDEX_VIEW = ERB.new(File.read( File.expand_path("../views/index.erb", __FILE__) ))
-AFRICA_NEWS= ERB.new(File.read( File.expand_path("../views/africa_news.erb", __FILE__) ))
-HOME_VIEW  = ERB.new(File.read( File.expand_path("../views/home.erb", __FILE__) ))
-
 class App
+  include Randle::Foundation
   def call env
     @request = Rack::Request.new env
     @rc_facebook = RC::Facebook.new
@@ -31,7 +28,7 @@ class App
     me_clear_cache = @request.session['me_clear_cache']
     @request.session['me_clear_cache'] = nil if me_clear_cache
     user = @rc_facebook.me 'cache.update' => me_clear_cache
-    [200, {}, [INDEX_VIEW.result(binding)]]
+    erb :index
   end
 
   def post_feed
@@ -46,12 +43,12 @@ class App
 
   def home
     user = @rc_facebook.home
-    [200, {}, [HOME_VIEW.result(binding)]]
+    erb :home
   end
 
   def africa_news
     feed = @rc_facebook.bbc_africa_feed
-    [200, {}, [AFRICA_NEWS.result(binding)]]
+    erb :africa_news
   end
 
   def handle_fb_error e, permissions
