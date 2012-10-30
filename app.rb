@@ -8,13 +8,11 @@ class App
       when '/'; index
       when '/home'; home
       when '/africa_news'; africa_news
-      when '/facebook_callback'; get_facebook_callback
       else; [200, {}, ["a get request"]]
       end
     when 'POST'
       case @request.path_info
       when '/post_feed'; post_feed
-      when '/facebook_callback'; post_facebook_callback
       else; [200, {}, ['a post request']]
       end
     else
@@ -49,17 +47,6 @@ class App
   def africa_news
     @feed = @rc_facebook.bbc_africa_feed
     [200, {}, [erb(:africa_news)]]
-  end
-
-  def get_facebook_callback
-    params['hub.verify_token'] == 'facebookmini' ? [200, {}, [params['hub.challenge']]] : [404, {}, []]
-  end
-
-  def post_facebook_callback
-    data = JSON.parse(@request.body)
-    users = (data['object'] == 'user' ? data['entry'] : [])
-    users.each{ |user| UserInCache.create(id: user['uid'], etag: user['time']) }
-    [200, {}, []]
   end
 
   def handle_fb_error e, permissions
