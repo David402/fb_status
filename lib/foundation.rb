@@ -28,6 +28,7 @@ module Randle::Foundation
     @request = Rack::Request.new env
     @rc_facebook = RC::Facebook.new
     @rc_facebook.access_token = @request.session['access_token']
+    @env = env
   end
 
   def access_token
@@ -36,5 +37,9 @@ module Randle::Foundation
 
   def uid
     @request.session['uid']
+  end
+
+  def env
+    @env
   end
 end
