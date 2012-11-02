@@ -24,11 +24,12 @@ class App
 
   def index
     etag = UserInCache.find(uid).try(:etag)
+    headers = etag ? {'ETag' => etag} : {}
     if env['HTTP_IF_NONE_MATCH'] and (etag == env['HTTP_IF_NONE_MATCH'])
-      [304, {}, []]
+      [304, headers, []]
     else
       @user = @rc_facebook.me 'cache.update' => true
-      [200, (etag ? {'ETag' => etag} : {}), [erb(:index)]]
+      [200, headers, [erb(:index)]]
     end
   end
   def post_feed
@@ -51,7 +52,7 @@ class App
 
   def handle_fb_error e, permissions
     if e.error['type'] == 'OAuthException'
-      session['access_token'] = nil
+      session['access_token'] = nil; session['uid'] = nil
       params = permissions.map{|p| "permissions[]=#{p}"}.join('&')
       return [303, {'Location' => "/login?#{params}"}, []]
     end
