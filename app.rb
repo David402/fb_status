@@ -41,7 +41,7 @@ puts "in dex !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! session = #{session.inspect}"
     res = @rc_facebook.post("#{uid}/feed", p.merge(access_token: access_token))
     [200, {}, []]
   rescue RC::Facebook::Error => e
-    handle_fb_permission_error e, ['publish_stream'], post_feed_msg: params[:message]
+    handle_fb_permission_error e, ['publish_stream'], post_feed_msg: params['message']
   end
 
   def home
