@@ -29,7 +29,7 @@ class App
        session[:post_feed_msg].empty?
       [304, headers, []]
     else
-      @msg = session[:post_feed_msg] || ""
+      @msg = "'#{session[:post_feed_msg]}'"
       session[:post_feed_msg] = nil
       @user = @rc_facebook.me 'cache.update' => true
       [200, headers, [erb(:index)]]
