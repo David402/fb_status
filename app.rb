@@ -19,15 +19,18 @@ class App
       [200, {}, ['hello world']]
     end
   rescue RC::Facebook::Error => e
-    handle_fb_error e, ['read_stream']
+    handle_fb_permission_error e, ['read_stream']
   end
 
   def index
     etag = UserInCache.find(uid).try(:etag)
     headers = etag ? {'ETag' => etag} : {}
-    if env['HTTP_IF_NONE_MATCH'] and (etag == env['HTTP_IF_NONE_MATCH'])
+    if env['HTTP_IF_NONE_MATCH'] and (etag == env['HTTP_IF_NONE_MATCH']) and
+       session[:post_feed_msg].empty?
       [304, headers, []]
     else
+      @msg = session[:post_feed_msg]
+      session[:post_feed_msg] = nil
       @user = @rc_facebook.me 'cache.update' => true
       [200, headers, [erb(:index)]]
     end
@@ -37,7 +40,7 @@ class App
     res = @rc_facebook.post("#{uid}/feed", p.merge(access_token: access_token))
     [200, {}, []]
   rescue RC::Facebook::Error => e
-    handle_fb_error e, ['publish_stream']
+    handle_fb_permission_error e, ['publish_stream'], post_feed_msg: params[:message]
   end
 
   def home
@@ -50,10 +53,11 @@ class App
     [200, {}, [erb(:africa_news)]]
   end
 
-  def handle_fb_error e, permissions
+  def handle_fb_permission_error e, permissions, opts={}
     if e.error['type'] == 'OAuthException'
-      session['access_token'] = nil; session['uid'] = nil
-      params = permissions.map{|p| "permissions[]=#{p}"}.join('&')
+      session['access_token'] = nil;
+      session['post_feed_msg'] = opts[:post_feed_msg]
+      params = opts[:permissions].map{|p| "permissions[]=#{p}"}.join('&')
       return [303, {'Location' => "/login?#{params}"}, []]
     end
     raise e

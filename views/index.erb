@@ -8,7 +8,7 @@
 <b id="my_name"><%= @user['name'] %></b><br>
 What's on your mind?<br>
 <textarea id="message_input"></textarea>
-<button onclick="ajaxSendRequest('post_feed')" style="background:#5b74a8;border-color:#8a9ac5 #29447E #1a356e;color:#fff">Share</button><br>
+<button onclick="ajaxSendRequest('')" style="background:#5b74a8;border-color:#8a9ac5 #29447E #1a356e;color:#fff">Share</button><br>
 
 <% def seconds_summary secs
      if secs < 60; "#{secs.to_i} seconds"
@@ -32,8 +32,11 @@ What's on your mind?<br>
 
 <script language="javascript" type="text/javascript">
   var xhr;
-  function ajaxSendRequest(uri) {
-    var msg_input = document.getElementById('message_input');
+  function ajaxSendRequest(msg) {
+    if (msg === '') {
+      msg_input = document.getElementById('message_input');
+      msg = msg_input.value;
+    }
     xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4) {
@@ -45,7 +48,7 @@ What's on your mind?<br>
             } else {
               var home = document.getElementById('home');
               var p = document.createElement('p')
-              p.innerHTML = msg_input.value;
+              p.innerHTML = msg;
               home.insertBefore(p, home.firstChild);
               msg_input.value = "";
               var h4 = document.createElement('h4');
@@ -55,8 +58,11 @@ What's on your mind?<br>
           }
         }
       };
-    xhr.open("POST", uri, true);
+    xhr.open("POST", 'post_feed', true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhr.send("message=" + msg_input.value);
+    xhr.send("message=" + msg);
+  }
+  if (<%= @msg %> !== '') {
+    ajaxSendRequest(<%= @msg %>);
   }
 </script>
