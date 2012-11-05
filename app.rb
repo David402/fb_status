@@ -57,7 +57,7 @@ class App
     if e.error['type'] == 'OAuthException'
       session['access_token'] = nil;
       session['post_feed_msg'] = opts[:post_feed_msg]
-      params = opts[:permissions].map{|p| "permissions[]=#{p}"}.join('&')
+      params = permissions.map{|p| "permissions[]=#{p}"}.join('&')
       return [303, {'Location' => "/login?#{params}"}, []]
     end
     raise e
