@@ -25,7 +25,6 @@ class App
   def index
     etag = UserInCache.find(uid).try(:etag)
     headers = etag ? {'ETag' => etag} : {}
-puts "in dex !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! session = #{session.inspect}"
     if env['HTTP_IF_NONE_MATCH'] and (etag == env['HTTP_IF_NONE_MATCH']) and
        session['post_feed_msg'].empty?
       [304, headers, []]
@@ -58,7 +57,6 @@ puts "in dex !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! session = #{session.inspect}"
     if e.error['type'] == 'OAuthException'
       session['access_token'] = nil;
       session['post_feed_msg'] = opts[:post_feed_msg]
-puts "!!!!!!!!!!!!!!!!!!!!!! handle permission error session = #{session.inspect}"
       params = permissions.map{|p| "permissions[]=#{p}"}.join('&')
       return [303, {'Location' => "/login?#{params}"}, []]
     end
