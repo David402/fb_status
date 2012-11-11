@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+<head>
+<style type="text/css">
+    .button {
+        width: 30px; height: 26px;
+        background-image: url('button.png');
+        margin: 6px 10px; padding: 0px; border: 0px;
+    }
+    .block {
+        margin: 14px; padding: 8px; background-color:white;
+    }
+</style>
+</head>
+<body style="margin:0; background-color: #D8DCE6;">
+<div style="background:#3B5998; width:100%; text-align:center; height: 25px; color: white;">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEwAAAAUCAMAAAAQlCuDAAAAYFBMVEU7WZhcdqv///9sg7K4xNpyiLdJZZ58kbyFmMCLncPp7PO/yd2xvNZPaqOcrMzO1eXa4OyZqMdSbqbz9fiqt9OTpMjn6vLs7/XS2ehmfbCgr8zi5vDh5u6ls9D29/uQocUpE6GLAAABaklEQVR4Xs2Tx6rDQAxFJU13r+nl///ySYrxEAeSLLJ4F4KPfPHB0WD4eTyify8Yvm3riojsO1Vj22/biT7JuP+2LYjK3v1AloefyOqBB+QYTq3t4IJDgWMQUJlJKQmCgIFMi6wOIcjGNPdKLl0lO9wJnsFbKfaVyDSjAd8qtT7TQ8ZTt8rMgTQWenoE7AIRaEm33rOZVBZEATC3JAcALsZoRc9zm+J8EsXJn7hUCkwk1GP/Qn4kmjYLdIxY8E+XycPRO/YLeZ2FuHqhiWjnswxSWxT7rUyjMngr02VkWSLJVraXHD7L1n+5noY1cSMbHWg+yvTBJ1kJTrAkuvT35gpnosmYMAdddn+Q0xmJbLJEYyZp9dSybKIlkG4LXHXW01zSQPNKKjNMcZUNLTu6UrApRHEBsKPArYJOBbsZuNwJNZmW5/UdOc7pakxAwKMB8OicQS9NjMGZGtA4vjWABBmfCRH1s2T+t/kDCeYRTba82oAAAAAASUVORK5CYII="> for Opera Mini
+<!--
+<img class="button" style="background-position: 0px -360px;">
+<img class="button" style="background-position: 0px -657px;">
+<img class="button" style="background-position: 0px -468px;">
+-->
+</div>
+
+<div style="background: white; height: 25px; width: 100%; text-align: center;
+    border: 1px solid black;">
+<span style="height: 25px; width: 33%; float: left; border-right: 1px solid black; background: #D8DCE6;">Me</span>
+<span style="height: 25px; width: 33%; float: left; border-right: 1px solid black;">News</span>
+<span style="height: 25px; width: 33%; float: left;">Message</span>
+</div>
+<div style="height: 118px"></div>
+
+<div style="background-color:white; height:59px; padding-top: 5px;">
+    <img style="width: 95px; height: 95px;
+      background: url('<%= @user['picture']['data']['url'] %>') 50% 30% no-repeat #D8DCE6;
+      position:absolute; top:110px; left:15px;
+      border: 3px solid #FFFFFF;">
+    <b id="my_name" style="margin-left:128px; margin-top: 12px; font-family: sans-serif; font-weight:700; font-size: 19px;"><%= @user['name'] %></b><br>
+</div>
+
+<div class="block">
+    What's on your mind?<br>
+    <textarea id="message_input" style="width: 95%"></textarea>
+    <button type="button" style="background:#5b74a8;border-color:#8a9ac5 #29447E #1a356e;color:#fff" onclick="ajaxSendRequest('')">Share</button>
+</div>
+
+<!--
+<img src="<%= @user['picture']['data']['url'] %>">
+<b id="my_name"><%= @user['name'] %></b><br>
+What's on your mind?<br>
+<textarea id="message_input"></textarea>
+<button onclick="ajaxSendRequest('')" style="background:#5b74a8;border-color:#8a9ac5 #29447E #1a356e;color:#fff">Share</button><br>
+-->
+
+
+<% def seconds_summary secs
+     if secs < 60; "#{secs.to_i} seconds"
+     elsif secs < 3600; "#{(secs / 60).to_i} minutes"
+     elsif secs < 86400;"#{(secs / 3600).to_i} hours"
+     else; "#{(secs / 86400).to_i} days"
+     end
+   end %>
+<div id="home">
+<% if false%>
+<% @user['feed']['data'].select{|e| e['message'] or e['description'] or e['caption']}.
+                         each do |e| %>
+  <p><%= [e['caption'], e['message'], e['description']].compact.join('; ') %>
+     <%= " -- #{e['likes']['count']} likes" if e['likes'] %>
+     -- <%= seconds_summary(Time.now - DateTime.parse(e['created_time']).to_time) %> ago</p>
+<% end %>
+<% end %>
+</div>
+
+<span style="color:grey">Visit us: Nani Lab.</span>
+
+<script language="javascript" type="text/javascript">
+  var xhr;
+  function ajaxSendRequest(msg) {
+    msg_input = document.getElementById('message_input');
+    if (msg === '') {
+      msg = msg_input.value;
+    }
+    xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+          if (xhr.status == 200) {
+            if (xhr.responseText.substring(0, 25) === "<script>top.location.href") {
+              // redirect to facebook
+              var url = xhr.responseText.substring(27, xhr.responseText.length - 10);
+              top.location.href = url;
+            } else {
+              var home = document.getElementById('home');
+              var p = document.createElement('p')
+              p.innerHTML = msg;
+              home.insertBefore(p, home.firstChild);
+              msg_input.value = "";
+              var h4 = document.createElement('h4');
+              h4.innerHTML = document.getElementById('my_name').innerHTML;
+              home.insertBefore(h4, home.firstChild);
+            }
+          }
+        }
+      };
+    xhr.open("POST", 'post_feed', true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send("message=" + msg);
+  }
+  if (<%= @msg %> !== '') {
+    ajaxSendRequest(<%= @msg %>);
+  }
+</script>

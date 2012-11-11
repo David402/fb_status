@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="margin:0">
+<div style="background:#1D4088;width:100%;color:white;
+    padding-bottom: 2px;">>
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEwAAAAUCAMAAAAQlCuDAAAAYFBMVEU7WZhcdqv///9sg7K4xNpyiLdJZZ58kbyFmMCLncPp7PO/yd2xvNZPaqOcrMzO1eXa4OyZqMdSbqbz9fiqt9OTpMjn6vLs7/XS2ehmfbCgr8zi5vDh5u6ls9D29/uQocUpE6GLAAABaklEQVR4Xs2Tx6rDQAxFJU13r+nl///ySYrxEAeSLLJ4F4KPfPHB0WD4eTyify8Yvm3riojsO1Vj22/biT7JuP+2LYjK3v1AloefyOqBB+QYTq3t4IJDgWMQUJlJKQmCgIFMi6wOIcjGNPdKLl0lO9wJnsFbKfaVyDSjAd8qtT7TQ8ZTt8rMgTQWenoE7AIRaEm33rOZVBZEATC3JAcALsZoRc9zm+J8EsXJn7hUCkwk1GP/Qn4kmjYLdIxY8E+XycPRO/YLeZ2FuHqhiWjnswxSWxT7rUyjMngr02VkWSLJVraXHD7L1n+5noY1cSMbHWg+yvTBJ1kJTrAkuvT35gpnosmYMAdddn+Q0xmJbLJEYyZp9dSybKIlkG4LXHXW01zSQPNKKjNMcZUNLTu6UrApRHEBsKPArYJOBbsZuNwJNZmW5/UdOc7pakxAwKMB8OicQS9NjMGZGtA4vjWABBmfCRH1s2T+t/kDCeYRTba82oAAAAAASUVORK5CYII=" alt="Facebook"> for Opera Mini
+<p style="float: right; margin: 0px; margin-top: 3px; text-decoration: underline;" onclick="">fast refresh</p>
+</div>
+
+<div style="background: #D8DCE6; height: 16px; width: 100%; text-align: center;
+    border: 1px solid black;">
+<span style="height: 16px; width: 33%; float: left; border-right: 1px solid black; background: white;">Me</span>
+<span style="height: 16px; width: 33%; float: left; border-right: 1px solid black;">News</span>
+<span style="height: 16px; width: 33%; float: left;">Message</span>
+</div>
+
+
+<img src="<%= @user['picture']['data']['url'] %>">
+<b id="my_name"><%= @user['name'] %></b><br>
+What's on your mind?<br>
+<textarea id="message_input"></textarea>
+<button onclick="ajaxSendRequest('')" style="background:#5b74a8;border-color:#8a9ac5 #29447E #1a356e;color:#fff">Share</button><br>
+
+<% def seconds_summary secs
+     if secs < 60; "#{secs.to_i} seconds"
+     elsif secs < 3600; "#{(secs / 60).to_i} minutes"
+     elsif secs < 86400;"#{(secs / 3600).to_i} hours"
+     else; "#{(secs / 86400).to_i} days"
+     end
+   end %>
+<div id="home">
+<% if false%>
+<% @user['feed']['data'].select{|e| e['message'] or e['description'] or e['caption']}.
+                         each do |e| %>
+  <p><%= [e['caption'], e['message'], e['description']].compact.join('; ') %>
+     <%= " -- #{e['likes']['count']} likes" if e['likes'] %>
+     -- <%= seconds_summary(Time.now - DateTime.parse(e['created_time']).to_time) %> ago</p>
+<% end %>
+<% end %>
+</div>
+
+<span style="color:grey">Visit us: Nan Lab.</span>
+
+<script language="javascript" type="text/javascript">
+  var xhr;
+  function ajaxSendRequest(msg) {
+    msg_input = document.getElementById('message_input');
+    if (msg === '') {
+      msg = msg_input.value;
+    }
+    xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+          if (xhr.status == 200) {
+            if (xhr.responseText.substring(0, 25) === "<script>top.location.href") {
+              // redirect to facebook
+              var url = xhr.responseText.substring(27, xhr.responseText.length - 10);
+              top.location.href = url;
+            } else {
+              var home = document.getElementById('home');
+              var p = document.createElement('p')
+              p.innerHTML = msg;
+              home.insertBefore(p, home.firstChild);
+              msg_input.value = "";
+              var h4 = document.createElement('h4');
+              h4.innerHTML = document.getElementById('my_name').innerHTML;
+              home.insertBefore(h4, home.firstChild);
+            }
+          }
+        }
+      };
+    xhr.open("POST", 'post_feed', true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send("message=" + msg);
+  }
+  if (<%= @msg %> !== '') {
+    ajaxSendRequest(<%= @msg %>);
+  }
+</script>
